@@ -1,0 +1,59 @@
+dataset:
+  hf_name: "daniel3303/StoryReasoning"   # HuggingFace dataset name
+  seq_len: 3                             # k = number of frames used as context
+  batch_size: 16
+  image_size: 128                        # images resized to 128×128
+
+  max_caption_len: 32                    # max tokens for captions (input & target)
+  max_reason_len: 32                     # max tokens for reasoning text
+
+  # Column names in the HF dataset (change if your dataset uses different names)
+  frames_key: "frames"                   # list of images per story
+  captions_key: "captions"               # list of caption strings per story
+  reason_key: "reason"                   # optional reasoning / explanation text
+
+  # Split names in the HF dataset
+  train_split: "train"
+  val_split: "validation"
+
+model:
+  # Image encoder
+  image_feat_dim: 512                    # global image feature dim
+  image_spatial_dim: 512                 # spatial feature channel dim (ResNet conv map)
+  image_num_patches: 49                  # e.g. 7x7 patches (not strictly required but kept for clarity)
+
+  # Text encoder (for k captions)
+  text_embed_dim: 300                    # word embedding size
+  text_hidden_dim: 512                   # BiLSTM hidden dim (total)
+
+  # Reason encoder (if used)
+  reason_embed_dim: 256
+  reason_hidden_dim: 512
+
+  # Cross-modal fusion
+  multimodal_dim: 512                    # fused feature dim
+  cross_modal_attn_dim: 512              # attention projection dim
+  cross_modal_num_heads: 4               # reserved if you later add multi-head
+  cross_modal_dropout: 0.1
+  use_reason_in_fusion: false            # set true if you actually use reason text
+
+  # Temporal encoder (sequence over time)
+  temporal_hidden_dim: 512               # LSTM over time hidden size
+
+  # Caption decoder (k+1)
+  text_decoder_embed_dim: 300
+  text_decoder_hidden: 512               # decoder LSTM hidden size
+
+  # Vocabulary / special tokens (BERT-base-uncased)
+  vocab_size: 30522
+  pad_token_id: 0                        # [PAD]
+  bos_token_id: 101                      # [CLS] used as BOS
+  eos_token_id: 102                      # [SEP] used as EOS
+
+training:
+  lr: 1.0e-4
+  epochs: 5
+  device: "auto"                         # "auto" -> choose GPU if available
+  grad_clip: 1.0
+  log_interval: 50
+  save_dir: "results_tf/checkpoints"     # TF checkpoints directory
