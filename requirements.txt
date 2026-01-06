@@ -1,0 +1,21 @@
+# ---- Core Deep Learning ----
+tensorflow==2.15.0
+tensorflow-addons==0.22.0          # optional, but often useful
+
+# ---- HuggingFace ----
+transformers==4.42.2
+datasets==2.19.0
+
+# ---- Image Processing ----
+Pillow==10.2.0
+
+# ---- Visualization ----
+matplotlib==3.8.2
+
+# ---- Utilities ----
+tqdm==4.66.1
+numpy==1.26.4
+pyyaml==6.0.1
+
+# ---- Optional (if you use GPU) ----
+# tensorflow-gpu==2.15.0           # Only for older setups; TF 2.15 auto-installs GPU support if CUDA is available.
